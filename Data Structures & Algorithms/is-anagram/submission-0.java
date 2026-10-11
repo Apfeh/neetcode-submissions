@@ -1,29 +1,28 @@
 class Solution {
     public boolean isAnagram(String s, String t) {
-        HashMap<Character, Integer> sMap = new HashMap<>();
-        Character c;
-        int count;
-        if(t.length() != s.length()){return false;}
-
+        HashMap<Character, Integer> letterCount = new HashMap<Character, Integer>();
         for(int i = 0; i < s.length(); i++){
-            if(sMap.computeIfPresent(s.charAt(i),(key, size) -> size + 1) == null){
-                sMap.put(s.charAt(i),1);
-            }
+            char sChar = s.charAt(i);
+            letterCount.put(sChar, letterCount.getOrDefault(sChar,0) + 1);
         }
-        
 
-        for(int x = 0; x < t.length(); x++){
-            c = t.charAt(x);
-            if(sMap.get(c) == null){
+        for(int i = 0; i < t.length(); i++){
+            char tChar = t.charAt(i);
+            if(letterCount.get(tChar) == null){
                 return false;
             }
-            count = sMap.get(c);
-            if(count == 1){
-                sMap.remove(c);
+
+            int value = letterCount.get(tChar);
+            if(value == 1){
+                letterCount.remove(tChar);
             }else{
-                sMap.put(c, count - 1);
+                letterCount.put(tChar, value - 1);
             }
         }
-        return sMap.isEmpty();
+        if(letterCount.isEmpty()){
+            return true;
+        }
+
+        return false;
     }
 }
